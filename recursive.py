@@ -49,7 +49,6 @@ def merge_sort(items):
         #Sort each half by recursively calling merge sort
         merge_sort(first_part)
         merge_sort(second_part)
-  
         i = 0
         j = 0
         k = 0
@@ -87,18 +86,18 @@ def partition(items, low, high):
     Memory usage: O(1), since it is sorted in place. """
     #Choose a pivot any way and document your method in docstring above
     pivot = items[low]
-    low += 1
+    end = low +1
     partitioning = True
     #Loop through all items in range [low...high]
     while partitioning:
         #Move items greater than pivot into back of range [p+1...high]
-        while low <= high and items[high] >= pivot:
+        while end <= high and items[high] >= pivot:
             high -= 1
         #Move items less than pivot into front of range [low...p-1]
-        while low <= high and items[low] <= pivot:
-            low += 1
-        if low <= high:
-            items[low], items[high] = items[high], items[low]
+        while end <= high and items[end] <= pivot:
+            end += 1
+        if end <= high:
+            items[end], items[high] = items[high], items[end]
         else:
             partitioning = False
 
@@ -110,10 +109,25 @@ def partition(items, low, high):
 def quick_sort(items, low=None, high=None):
     """Sort given items in place by partitioning items in range `[low...high]`
     around a pivot item and recursively sorting each remaining sublist range.
-    TODO: Best case running time: ??? Why and under what conditions?
-    TODO: Worst case running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Check if high and low range bounds have default values (not given)
-    # TODO: Check if list or range is so small it's already sorted (base case)
-    # TODO: Partition items in-place around a pivot and get index of pivot
-    # TODO: Sort each sublist range by recursively calling quick sort
+    Best case running time: Average case is O(n * logn) since the selected pivots help to sort efficiently.
+    Worst case running time: Worst case is O(n^2) since we may have to go through both arrays completely to sort them.
+    Memory usage: Memory is O(1) for all cases, since it is an in place sort. """
+     
+    #Check if high and low range bounds have default values (not given)
+    if low == None and high == None:
+        low = 0
+        high = len(items)-1
+    #Check if list or range is so small it's already sorted (base case)
+  
+    if low >= high:
+        return items
+    #Partition items in-place around a pivot and get index of pivot
+    part = partition(items, low, high)
+    #Sort each sublist range by recursively calling quick sort
+    quick_sort(items, low, part-1)
+    quick_sort(items, part+1, high)
+
+
+items = [1,4,2,5,6]
+quick_sort(items)
+print(items)
