@@ -79,17 +79,33 @@ print(merge_sort([1,7,3,6,2]))
 
 def partition(items, low, high):
     """Return index `p` after in-place partitioning given items in range
-    `[low...high]` by choosing a pivot (TODO: document your method here) from
+    `[low...high]` by choosing a pivot (Choose the first or last element as the pivot) from
     that range, moving pivot into index `p`, items less than pivot into range
     `[low...p-1]`, and items greater than pivot into range `[p+1...high]`.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Choose a pivot any way and document your method in docstring above
-    # TODO: Loop through all items in range [low...high]
-    # TODO: Move items less than pivot into front of range [low...p-1]
-    # TODO: Move items greater than pivot into back of range [p+1...high]
-    # TODO: Move pivot item into final position [p] and return index p
+    Running time: O(n) average and worst case, since you have to sort through the 
+    low to high range, and O(1) best case, where the low would equal the high.
+    Memory usage: O(1), since it is sorted in place. """
+    #Choose a pivot any way and document your method in docstring above
+    pivot = items[low]
+    low += 1
+    partitioning = True
+    #Loop through all items in range [low...high]
+    while partitioning:
+        #Move items greater than pivot into back of range [p+1...high]
+        while low <= high and items[high] >= pivot:
+            high -= 1
+        #Move items less than pivot into front of range [low...p-1]
+        while low <= high and items[low] <= pivot:
+            low += 1
+        if low <= high:
+            items[low], items[high] = items[high], items[low]
+        else:
+            partitioning = False
 
+    #Move pivot item into final position [p] and return index p
+    items[low], items[high] = items[high], items[low]
+
+    return high
 
 def quick_sort(items, low=None, high=None):
     """Sort given items in place by partitioning items in range `[low...high]`
