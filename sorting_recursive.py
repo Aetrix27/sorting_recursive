@@ -8,7 +8,7 @@ def merge(items1, items2):
     """Merge given lists of items, each assumed to already be in sorted order,
     and return a new list containing all items in sorted order.
     Running time: O(1) average, since it traverses through both at the same time
-    Memory usage: O(1), no extra memory being used """
+    Memory usage: O(1), only makes new array """
     # Repeat until one list is empty
     #  Find minimum item in both lists and append it to new list
     # Append remaining items in non-empty list to new list
@@ -36,10 +36,10 @@ print(merge([1,2,6],[2,4,3]))
 def merge_sort(items):
     """Sort given items by splitting list into two approximately equal halves,
     sorting each recursively, and merging results into a list in sorted order.
-    Running time: O(n * logn) for every case, since it always divides the array and compares each time.
+    Running time: O(n * logn) for every case, since it makes O(n) copies when dividing the array into smaller ones and compares each time.
     Memory usage: O(n) in all cases since it must copy the data when sorting."""
     #Check if list is so small it's already sorted (base case)
-    if len(items) == 1:
+    if len(items) < 2:
         return items
     elif len(items) > 1:
         #Split items list into approximately equal halves
@@ -60,14 +60,17 @@ def merge_sort(items):
             else:
                 items[k] = second_part[j]
                 j += 1
+            #Moves to next block division
             k += 1
 
         #Merge sorted halves into one list in sorted order
+        print(items)
         while i < len(first_part):
             items[k] = first_part[i]
             i += 1
             k += 1
-  
+        print(items)
+
         while j < len(second_part):
             items[k] = second_part[j]
             j += 1
@@ -86,18 +89,18 @@ def partition(items, low, high):
     Memory usage: O(1), since it is sorted in place. """
     #Choose a pivot any way and document your method in docstring above
     pivot = items[low]
-    end = low +1
+    start = low +1
     partitioning = True
     #Loop through all items in range [low...high]
     while partitioning:
         #Move items greater than pivot into back of range [p+1...high]
-        while end <= high and items[high] >= pivot:
+        while start <= high and items[high] >= pivot:
             high -= 1
         #Move items less than pivot into front of range [low...p-1]
-        while end <= high and items[end] <= pivot:
-            end += 1
-        if end <= high:
-            items[end], items[high] = items[high], items[end]
+        while start <= high and items[start] <= pivot:
+            start += 1
+        if start <= high:
+            items[start], items[high] = items[high], items[start]
         else:
             partitioning = False
 
@@ -120,7 +123,7 @@ def quick_sort(items, low=None, high=None):
     #Check if list or range is so small it's already sorted (base case)
   
     if low >= high:
-        return items
+        return 
     #Partition items in-place around a pivot and get index of pivot
     part = partition(items, low, high)
     #Sort each sublist range by recursively calling quick sort
