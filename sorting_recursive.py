@@ -7,7 +7,7 @@ from re import I
 def merge(items1, items2):
     """Merge given lists of items, each assumed to already be in sorted order,
     and return a new list containing all items in sorted order.
-    Running time: O(1) average, since it traverses through both at the same time
+    Running time: O(n) average, since it traverses through both at the same time
     Memory usage: O(1), only makes new array """
     # Repeat until one list is empty
     #  Find minimum item in both lists and append it to new list
@@ -31,7 +31,7 @@ def merge(items1, items2):
     return merged_list
         
    
-print(merge([1,2,6],[2,4,3]))
+print(merge([1,2,4],[3,5,6]))
 
 def merge_sort(items):
     """Sort given items by splitting list into two approximately equal halves,
@@ -64,12 +64,10 @@ def merge_sort(items):
             k += 1
 
         #Merge sorted halves into one list in sorted order
-        print(items)
         while i < len(first_part):
             items[k] = first_part[i]
             i += 1
             k += 1
-        print(items)
 
         while j < len(second_part):
             items[k] = second_part[j]
@@ -92,16 +90,18 @@ def partition(items, low, high):
     start = low +1
     partitioning = True
     #Loop through all items in range [low...high]
+    #Move items greater than pivot into back of range [p+1...high]
+    #Move items less than pivot into front of range [low...p-1]
     while partitioning:
-        #Move items greater than pivot into back of range [p+1...high]
         while start <= high and items[high] >= pivot:
             high -= 1
-        #Move items less than pivot into front of range [low...p-1]
+        
         while start <= high and items[start] <= pivot:
             start += 1
         if start <= high:
             items[start], items[high] = items[high], items[start]
         else:
+            #Found a value of high and low that is out of order or low is now higher than high
             partitioning = False
 
     #Move pivot item into final position [p] and return index p
@@ -112,7 +112,7 @@ def partition(items, low, high):
 def quick_sort(items, low=None, high=None):
     """Sort given items in place by partitioning items in range `[low...high]`
     around a pivot item and recursively sorting each remaining sublist range.
-    Best case running time: Average case is O(n * logn) since the selected pivots help to sort efficiently.
+    Best case running time: Average and best case is O(n * logn) since the selected pivots help to sort efficiently.
     Worst case running time: Worst case is O(n^2) since we may have to go through both arrays completely to sort them.
     Memory usage: Memory is O(1) for all cases, since it is an in place sort. """
      
