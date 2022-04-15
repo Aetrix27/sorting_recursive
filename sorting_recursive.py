@@ -77,7 +77,31 @@ def merge_sort(items):
   
 print(merge_sort([1,7,3,6,2]))
 
-def partition(items, low, high):
+def partition_external(items):
+    """
+    Time complexity: O(n) all cases because each item that is passed in is compared to the pivot
+                    and appended to the new list.
+    Space complexity: O(n) since when you partition the input, O(n) space is created for the
+                        new lists.
+    """
+    if len(items) <= 1:
+        return "List too small"
+    pivot_index = 0
+    pivot_value = items[pivot_index]
+    smaller_items = []
+    larger_items = []
+    same = []
+
+    for item in items:
+        if item == pivot_value:
+            same.append(item)
+        elif item < pivot_value:
+            smaller_items.append(item)
+        elif item > pivot_value:
+            larger_items.append(item)
+    return smaller_items, same, larger_items
+
+def partition_in_place(items, low, high):
     """Return index `p` after in-place partitioning given items in range
     `[low...high]` by choosing a pivot (Choose the first or last element as the pivot) from
     that range, moving pivot into index `p`, items less than pivot into range
@@ -98,6 +122,7 @@ def partition(items, low, high):
         
         while start <= high and items[start] <= pivot:
             start += 1
+        #Swaps items in order to sort
         if start <= high:
             items[start], items[high] = items[high], items[start]
         else:
@@ -125,12 +150,13 @@ def quick_sort(items, low=None, high=None):
     if low >= high:
         return 
     #Partition items in-place around a pivot and get index of pivot
-    part = partition(items, low, high)
+    part = partition_in_place(items, low, high)
     #Sort each sublist range by recursively calling quick sort
     quick_sort(items, low, part-1)
     quick_sort(items, part+1, high)
 
 
-items = [1,4,2,5,6]
+items = [1,4,2,5,6,1,2,5]
 quick_sort(items)
 print(items)
+
